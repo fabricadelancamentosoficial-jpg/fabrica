@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1b2a">
+<title>Aula Arquitetura do Negócio</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: mesmo fundo da página de links; promessa sobre o degradê, formulário num card branco único */
+:root{
+  --bg:#163049;
+  --on-bg:#f2f6fa;
+  --on-bg-m:rgba(226,236,245,.74);
+  --ac-sky:#a9cde6;
+  --card:#fff;
+  --field:#f6f7f9;
+  --ac:#2c6f9e;
+  --ac-l:#eaf2f8;
+  --ac-m:#6fa3c8;
+  --navy:#13273a;
+  --txt:#16181b;
+  --txt-m:#555b63;
+  --txt-l:#8d939b;
+  --border-s:rgba(0,0,0,.12);
+  --err:#b4432f;
+  --err-l:#fbefec;
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--bg)}
+body{background:transparent;min-height:100vh;color:var(--txt);font-family:var(--font);-webkit-font-smoothing:antialiased;line-height:1.6}
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(120% 60% at 85% 0%,rgba(111,163,200,.45) 0%,rgba(111,163,200,0) 60%),
+  radial-gradient(90% 50% at 0% 100%,rgba(44,111,158,.55) 0%,rgba(44,111,158,0) 65%),
+  linear-gradient(165deg,#0c1b2a 0%,#163049 42%,#22517a 78%,#2c6f9e 100%)}
+p,h1,h2,fieldset,legend{margin:0;padding:0}
+fieldset{border:0;min-width:0}
+
+.hdr{padding-inline:20px;padding-block:18px;border-bottom:1px solid rgba(255,255,255,.08);color:var(--on-bg)}
+.hdr-in{max-width:620px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.01em;color:var(--on-bg);text-decoration:none}
+.logo span{color:var(--ac-sky)}
+.hdr-r{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--on-bg-m)}
+
+.main{max-width:620px;margin:0 auto;padding-inline:16px;padding-block:36px 56px;display:flex;flex-direction:column;gap:28px}
+
+.hero{padding:0 6px;display:flex;flex-direction:column;gap:14px}
+.ey{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ac-sky);font-weight:500}
+.hero h1{color:var(--on-bg);font-size:clamp(30px,8vw,40px);font-weight:300;letter-spacing:-.03em;line-height:1.15;text-wrap:balance}
+.hero h1 strong{font-weight:500}
+.hero p{color:var(--on-bg-m);font-size:16px;line-height:1.7;max-width:46ch}
+
+.card{background:var(--card);border-radius:18px;padding:32px 22px 28px;box-shadow:0 1px 2px rgba(6,16,26,.2),0 24px 50px -22px rgba(6,16,26,.6);display:flex;flex-direction:column;gap:28px}
+.card-h{display:flex;flex-direction:column;gap:8px;padding-bottom:22px;border-bottom:1px solid rgba(0,0,0,.07)}
+.card-h h2{font-size:22px;font-weight:400;letter-spacing:-.02em;line-height:1.3}
+.card-h p{font-size:14px;color:var(--txt-m);line-height:1.65}
+
+.f{display:flex;flex-direction:column;gap:9px}
+.lbl,legend{font-size:14px;font-weight:500;color:var(--txt);letter-spacing:-.005em}
+legend{margin-bottom:12px}
+input[type=text],input[type=tel],input[type=email]{width:100%;font-family:inherit;font-size:16px;color:var(--txt);background:var(--field);border:1px solid var(--border-s);border-radius:10px;padding:15px 16px;outline:none;transition:border-color .2s,background .2s,box-shadow .2s;color-scheme:light}
+input::placeholder{color:var(--txt-l)}
+input:focus{border-color:var(--ac-m);background:#fff;box-shadow:0 0 0 4px var(--ac-l)}
+
+.opts{display:flex;flex-direction:column;gap:8px}
+.opt{position:relative;display:flex;align-items:center;gap:12px;min-height:52px;padding:13px 16px;border:1px solid var(--border-s);border-radius:10px;background:var(--field);font-size:14.5px;color:var(--txt-m);cursor:pointer;line-height:1.45;transition:border-color .15s,background .15s,color .15s}
+.opt input{position:absolute;opacity:0;pointer-events:none}
+.opt::before{content:"";width:16px;height:16px;border-radius:50%;border:1.5px solid var(--border-s);flex-shrink:0;transition:all .15s;background:#fff}
+.opt:hover{border-color:var(--ac-m);color:var(--ac)}
+.opt:has(input:checked){border-color:var(--ac);background:var(--ac-l);color:var(--ac);font-weight:500}
+.opt:has(input:checked)::before{border-color:var(--ac);background:var(--ac);box-shadow:inset 0 0 0 3px var(--ac-l)}
+.opt:has(input:focus-visible){outline:2px solid var(--ac-m);outline-offset:2px}
+
+.bad input[type=text],.bad input[type=tel],.bad input[type=email]{border-color:var(--err)}
+.bad .opt{border-color:rgba(180,67,47,.45)}
+.msg{font-size:12.5px;color:var(--err);display:none}
+.bad .msg{display:block}
+
+.send{display:flex;align-items:center;justify-content:space-between;gap:12px;width:100%;min-height:58px;padding:0 24px;border:0;border-radius:12px;background:var(--navy);color:#fff;font-family:inherit;font-size:15.5px;font-weight:500;cursor:pointer;transition:background .2s,transform .15s}
+.send:hover{background:var(--ac)}
+.send:active{transform:scale(.99)}
+.send:disabled{opacity:.6;cursor:wait}
+.send .arr{transition:transform .2s}
+.send:hover .arr{transform:translateX(4px)}
+.send:focus-visible{outline:2px solid var(--ac-m);outline-offset:3px}
+.fine{font-size:12px;color:var(--txt-l);text-align:center;margin-top:-14px}
+.err{padding:14px 16px;border-radius:10px;background:var(--err-l);color:var(--err);font-size:13px;line-height:1.6}
+.hp{position:absolute;left:-9999px;opacity:0;height:0;width:0}
+
+.done{text-align:center;padding:48px 26px;align-items:center;gap:16px}
+.done-ic{width:56px;height:56px;border-radius:50%;background:var(--ac-l);color:var(--ac);display:flex;align-items:center;justify-content:center;font-size:22px}
+.done h2{font-size:26px;font-weight:300;letter-spacing:-.02em}
+.done p{font-size:14.5px;color:var(--txt-m);line-height:1.7;max-width:40ch}
+
+.foot{text-align:center;font-size:12px;color:var(--on-bg-m)}
+.what{margin-top:8px;display:flex;flex-direction:column;gap:8px;padding:18px 20px;border-radius:14px;background:rgba(8,20,32,.42);border:1px solid rgba(169,205,230,.2);-webkit-backdrop-filter:blur(12px);backdrop-filter:blur(12px);max-width:52ch}
+.what-t{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac-sky);font-weight:500}
+.what-t::before{content:"";width:6px;height:6px;border-radius:50%;background:var(--ac-sky)}
+.what p{font-size:14.5px;color:var(--on-bg);opacity:.86;line-height:1.65;margin:0}
+
+@media (min-width:640px){
+  .main{padding-block:56px 72px}
+  .card{padding:44px 44px 36px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <a class="logo" href="../">fábrica<span>.</span></a>
+    <span class="hdr-r">Aula prática</span>
+  </div>
+</header>
+
+<main class="main">
+  <section class="hero">
+    <p class="ey">Aula prática · Arquitetura do Negócio Educacional</p>
+    <h1>Seu conhecimento pode se tornar um <strong>negócio educacional.</strong></h1>
+    <p>Acesse uma aula prática e um guia para entender como transformar sua experiência em uma mentoria, formação ou imersão para outros profissionais da saúde.</p>
+    <div class="what">
+      <span class="what-t">Aula gravada + guia digital</span>
+      <p>Conheça o mapa para estruturar o que ensinar, para quem ensinar, seu método, produto, oferta e o caminho até as primeiras vendas.</p>
+    </div>
+  </section>
+
+  <form class="card" id="form" novalidate>
+    <div class="card-h">
+      <h2>Preencha para liberar seu acesso.</h2>
+      <p>Você será direcionado à aula após o cadastro e receberá o link no e-mail para assistir novamente.</p>
+    </div>
+
+    <div class="f" data-f="nome">
+      <label class="lbl" for="nome">Seu nome</label>
+      <input type="text" id="nome" name="nome" autocomplete="name" placeholder="Como podemos te chamar">
+      <span class="msg">Preencha seu nome.</span>
+    </div>
+
+    <div class="f" data-f="email">
+      <label class="lbl" for="email">Seu melhor e-mail</label>
+      <input type="email" id="email" name="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="voce@email.com">
+      <span class="msg">Informe um e-mail válido.</span>
+    </div>
+
+    <div class="f" data-f="whatsapp">
+      <label class="lbl" for="whatsapp">Seu WhatsApp</label>
+      <input type="tel" id="whatsapp" name="whatsapp" autocomplete="tel-national" inputmode="numeric" placeholder="(00) 00000-0000">
+      <span class="msg">Informe um WhatsApp com DDD.</span>
+    </div>
+
+    <input class="hp" type="text" id="honey" name="_honey" tabindex="-1" autocomplete="off" aria-hidden="true">
+    <div id="errBox"></div>
+    <button class="send" type="submit" id="send">Quero acessar a aula <span class="arr" aria-hidden="true">→</span></button>
+    <p class="fine">Acesso gratuito. Seus dados ficam só com o time da Fábrica.</p>
+  </form>
+
+  <p class="foot">fábrica.</p>
+</main>
+
+<script>
+/* ====== CONFIGURAÇÃO ====== */
+const EMAIL_DESTINO = 'fabricadelancamentosoficial@gmail.com';   // onde o lead chega
+const ENDPOINT = 'https://formsubmit.co/ajax/' + EMAIL_DESTINO;
+const AULA_URL = 'https://negocioseducaionais.netlify.app/aula.html';                                    // para onde a pessoa vai depois do cadastro
+const ORIGEM = 'Aula — Arquitetura';
+/* ========================== */
+const $ = id => document.getElementById(id);
+const form = $('form');
+
+function maskTel(v){
+  let d=v.replace(/\D/g,'').slice(0,13);
+  if(d.length>11 && d.indexOf('55')===0) d=d.slice(2);
+  d=d.slice(0,11);
+  if(d.length<=2) return d.length?'('+d:'';
+  if(d.length<=6) return '('+d.slice(0,2)+') '+d.slice(2);
+  if(d.length<=10) return '('+d.slice(0,2)+') '+d.slice(2,6)+'-'+d.slice(6);
+  return '('+d.slice(0,2)+') '+d.slice(2,7)+'-'+d.slice(7);
+}
+function maskIg(v){
+  v=(v||'').trim().replace(/^(https?:\/\/)?(www\.)?instagram\.com\//i,'').replace(/[\/?].*$/,'').replace(/\s/g,'');
+  return v ? '@'+v.replace(/^@+/,'') : '';
+}
+$('whatsapp').addEventListener('input',e=>{e.target.value=maskTel(e.target.value)});
+
+const radio = n => (form.querySelector('input[name="'+n+'"]:checked')||{}).value||'';
+const checks = {
+  nome: ()=>$('nome').value.trim().length>=2,
+  email: ()=>/^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test($('email').value.trim()),
+  whatsapp: ()=>$('whatsapp').value.replace(/\D/g,'').length>=10
+};
+function validate(){
+  let first=null;
+  Object.keys(checks).forEach(k=>{
+    const box=form.querySelector('[data-f="'+k+'"]');
+    const good=checks[k]();
+    box.classList.toggle('bad',!good);
+    if(!good && !first) first=box;
+  });
+  if(first) first.scrollIntoView({behavior:'smooth',block:'center'});
+  return !first;
+}
+form.addEventListener('input',e=>{
+  const box=e.target.closest('[data-f]');
+  if(box && box.classList.contains('bad') && checks[box.dataset.f]()) box.classList.remove('bad');
+});
+
+function irParaAula(){ window.location.href = AULA_URL; }
+
+form.addEventListener('submit',e=>{
+  e.preventDefault();
+  $('errBox').innerHTML='';
+  if($('honey').value){ irParaAula(); return; }
+  if(!validate()) return;
+  const nome=$('nome').value.trim();
+  const tel=$('whatsapp').value;
+  const payload={
+    _subject:'Lead Aula Arquitetura: '+nome,
+    _template:'table',
+    _captcha:'false',
+    'Nome':nome,
+    'email':$('email').value.trim(),
+    _replyto:$('email').value.trim(),
+    _autoresponse:'Olá, '+nome.split(' ')[0]+'! Seu acesso à aula Arquitetura do Negócio Educacional está liberado. Assista quando quiser por este link: '+new URL(AULA_URL, location.href).href+'  Um abraço, time Fábrica.',
+    'WhatsApp':tel,
+    'Origem':ORIGEM,
+    'WhatsApp (link)':'https://wa.me/55'+tel.replace(/\D/g,''),
+    'Cadastrado em':new Date().toLocaleString('pt-BR')
+  };
+  const btn=$('send');
+  btn.disabled=true; btn.firstChild.textContent='Liberando seu acesso… ';
+  /* registra o lead e segue para a aula; se o registro demorar mais de 6s, libera mesmo assim */
+  const timeout=new Promise(r=>setTimeout(r,6000));
+  const envio=fetch(ENDPOINT,{method:'POST',headers:{'Content-Type':'application/json','Accept':'application/json'},body:JSON.stringify(payload),keepalive:true}).catch(()=>{});
+  Promise.race([envio,timeout]).then(irParaAula);
+});
+</script>
+</body>
+</html>

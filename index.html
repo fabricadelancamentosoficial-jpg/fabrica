@@ -1,0 +1,154 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<meta name="theme-color" content="#0c1b2a">
+<title>Fábrica Links</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600&display=swap">
+<style>
+/* Layout: mesmo sistema da aplicação Signature. Cabeçalho com marca, coluna única; 01 em card cheio, 02 e 03 em cards mais leves */
+:root{
+  --bg:#163049;
+  --on-bg:#f2f6fa;
+  --on-bg-m:rgba(226,236,245,.72);
+  --ac-sky:#a9cde6;
+  --navy:#13273a;
+  --card:#fff;
+  --ac:#2c6f9e;
+  --ac-l:#eaf2f8;
+  --ac-m:#6fa3c8;
+  --txt:#16181b;
+  --txt-m:#555b63;
+  --txt-l:#959ba3;
+  --border:rgba(0,0,0,.08);
+  --border-s:rgba(0,0,0,.14);
+  --font:'Inter',-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;
+  color-scheme:dark;
+}
+*,*::before,*::after{box-sizing:border-box}
+html{background:var(--bg)}
+body{background:transparent;min-height:100vh;color:var(--txt);font-family:var(--font);-webkit-font-smoothing:antialiased;line-height:1.6}
+p,h1,h2{margin:0}
+
+body::before{content:"";position:fixed;inset:0;z-index:-1;pointer-events:none;background:
+  radial-gradient(120% 60% at 85% 0%,rgba(111,163,200,.45) 0%,rgba(111,163,200,0) 60%),
+  radial-gradient(90% 50% at 0% 100%,rgba(44,111,158,.55) 0%,rgba(44,111,158,0) 65%),
+  linear-gradient(165deg,#0c1b2a 0%,#163049 42%,#22517a 78%,#2c6f9e 100%)}
+.hdr{padding-inline:20px;padding-block:18px;border-bottom:1px solid rgba(255,255,255,.08);background:transparent;color:var(--on-bg)}
+.hdr-in{max-width:600px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:16px}
+.logo{font-size:15px;font-weight:600;letter-spacing:-.01em}
+.logo span{color:var(--ac-sky)}
+.hdr-r{font-size:11px;letter-spacing:.08em;text-transform:uppercase;color:var(--on-bg-m)}
+
+.main{max-width:600px;margin:0 auto;padding-inline:16px;padding-block:28px 48px;display:flex;flex-direction:column;gap:16px}
+
+.intro{padding:4px 6px 10px}
+.intro-ey{font-size:11px;letter-spacing:.12em;text-transform:uppercase;color:var(--ac-sky);font-weight:500;margin-bottom:12px;line-height:1.5}
+.intro-t{color:var(--on-bg);font-size:clamp(23px,6vw,28px);font-weight:300;letter-spacing:-.02em;line-height:1.3;text-wrap:balance}
+.intro-t strong{font-weight:500}
+
+.tag{display:inline-flex;align-items:center;gap:8px;font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--ac);font-variant-numeric:tabular-nums}
+.dot{width:6px;height:6px;border-radius:50%;background:var(--ac-m)}
+
+.card{background:var(--card);border:1px solid rgba(255,255,255,.6);border-radius:16px;display:flex;flex-direction:column;box-shadow:0 1px 2px rgba(6,16,26,.2),0 18px 40px -18px rgba(6,16,26,.55)}
+
+/* 01: principal */
+.c1{padding:36px 28px 28px;gap:16px;background:rgba(8,20,32,.5);-webkit-backdrop-filter:blur(14px);backdrop-filter:blur(14px);border-color:rgba(169,205,230,.22);color:#f2f5f8}
+.c1 .tag{color:#9cc3dd}
+.c1 .dot{background:#9cc3dd}
+.c1 h2{font-size:clamp(27px,7.4vw,34px);font-weight:300;letter-spacing:-.03em;line-height:1.2;text-wrap:balance}
+.c1 h2 strong{font-weight:500}
+.c1 p{font-size:15px;color:#b3c0cc;line-height:1.7;max-width:44ch}
+.btn{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:56px;padding:0 24px;margin-top:10px;background:#fff;color:var(--navy);border-radius:10px;text-decoration:none;font-size:15px;font-weight:500;transition:opacity .2s}
+.btn:hover{background:#eaf2f8}
+.btn .arr{color:var(--ac)}
+.btn .arr,.lk .arr{transition:transform .2s}
+.btn:hover .arr,.lk:hover .arr{transform:translateX(4px)}
+
+/* 02 e 03: secundários */
+.c2,.c3{padding:28px 28px 24px;gap:12px}
+.c2 h2,.c3 h2{font-size:21px;font-weight:400;letter-spacing:-.02em;line-height:1.35;text-wrap:balance}
+.c2 p,.c3 p{font-size:14.5px;color:var(--txt-m);line-height:1.65;max-width:46ch}
+.lk{display:flex;align-items:center;justify-content:space-between;gap:12px;min-height:54px;padding:0 22px;margin-top:8px;background:var(--ac-l);border-radius:10px;color:var(--ac);text-decoration:none;font-size:14.5px;font-weight:500;transition:background .2s,color .2s}
+.lk:hover{background:var(--ac);color:#fff}
+.lk:hover .arr{color:#fff}
+.lk .arr{color:var(--ac)}
+
+
+.foot{margin-top:18px;text-align:center;font-size:12px;color:var(--on-bg-m)}
+.foot .logo{font-size:13px;color:var(--on-bg-m)}
+.foot .logo span{color:var(--ac-sky)}
+
+a:focus-visible{outline:2px solid var(--ac-sky);outline-offset:3px}
+a[aria-disabled="true"]{cursor:default}
+
+@media (prefers-reduced-motion:no-preference){
+  .card{animation:up .45s cubic-bezier(.2,.7,.2,1) both}
+  .c2{animation-delay:.05s}.c3{animation-delay:.1s}
+  @keyframes up{from{transform:translateY(6px)}to{transform:none}}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (min-width:640px){
+  .main{padding-block:48px 64px}
+  .c1{padding:48px 48px 40px}
+  .c2,.c3{padding:32px 40px 32px}
+}
+</style>
+</head>
+<body>
+
+<header class="hdr">
+  <div class="hdr-in">
+    <div class="logo">fábrica<span>.</span></div>
+    <div class="hdr-r">Arthur Fonseca</div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="intro">
+    <p class="intro-ey">Para médicos, dentistas e empresários da área da saúde</p>
+    <h1 class="intro-t">Construção de negócios inteligentes e <strong>estratégias para profissionais da saúde acima da média.</strong></h1>
+  </div>
+
+  <section class="card c1" aria-labelledby="t1">
+    <span class="tag"><span class="dot"></span>01 / Negócios Educacionais</span>
+    <h2 id="t1">Se torne um <strong>empresário(a)</strong> na área da educação.</h2>
+    <p>Construímos mentorias, formações e imersões para profissionais da saúde que querem ir além da própria agenda.</p>
+    <a class="btn" data-link="negocios" href="#">Quero construir meu negócio <span class="arr" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="card c2" aria-labelledby="t2">
+    <span class="tag"><span class="dot"></span>02 / Signature</span>
+    <h2 id="t2">Você não quer aparecer mais, quer que o seu nome trabalhe por você, no consultório e além dele.</h2>
+    <a class="lk" data-link="signature" href="#">Conhecer o Signature <span class="arr" aria-hidden="true">→</span></a>
+  </section>
+
+  <section class="card c3" aria-labelledby="t3">
+    <span class="tag"><span class="dot"></span>03 / Aula prática</span>
+    <h2 id="t3">Arquitetura do Negócio Educacional</h2>
+    <p>Uma aula prática com um guia para você copiar, adaptar e transformar sua experiência em um método educacional.</p>
+    <a class="lk" data-link="aula" href="#">Acessar a aula <span class="arr" aria-hidden="true">→</span></a>
+  </section>
+
+  <footer class="foot"><span class="logo">fábrica<span>.</span></span></footer>
+</main>
+
+<script>
+/* ====== CONFIGURE OS LINKS AQUI ====== */
+const LINKS = {
+  negocios:  "aplicacao-negocios/",  // 01: página de aplicação de negócios educacionais
+  signature: "aplicacao-signature/",  // 02: página de apresentação do Signature
+  aula:      "aula-arquitetura/"   // 03: página comercial da aula
+};
+/* ===================================== */
+document.querySelectorAll("[data-link]").forEach(a => {
+  const url = LINKS[a.dataset.link];
+  if (url) { a.href = url; if (/^https?:/.test(url)) { a.target = "_blank"; a.rel = "noopener"; } }
+  else { a.setAttribute("aria-disabled","true"); a.addEventListener("click", e => e.preventDefault()); }
+});
+</script>
+</body>
+</html>
